@@ -1,0 +1,16 @@
+volumes:
+  db:
+
+services:
+  postgres:
+    container_name: forum-api-db
+    image: postgres:17.6
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: forum-db
+    volumes:
+      - db:/var/lib/postgresql/data
