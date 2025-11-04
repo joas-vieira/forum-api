@@ -1,10 +1,20 @@
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:3333
 
 POST {{baseUrl}}/accounts
 Content-Type: application/json
 
 {
   "name": "John Doe",
-  "email": "asdas",
+  "email": "john.doe@example.com",
+  "password": "password"
+}
+
+###
+
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
   "password": "password"
 }
