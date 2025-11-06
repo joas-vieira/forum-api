@@ -13,7 +13,12 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main"
+    "start:prod": "node dist/main",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "test:debug": "vitest --inspect-brk --inspect --logHeapUsage --threads=false",
+    "test:e2e": "vitest run --config ./vitest.config.e2e.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.8",
@@ -36,13 +41,17 @@
     "@nestjs/cli": "^11.0.10",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.8",
+    "@swc/core": "^1.15.0",
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.0",
     "@types/passport-jwt": "^4.0.1",
+    "@vitest/coverage-v8": "^4.0.7",
     "eslint": "^9.39.1",
     "prisma": "^6.18.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.3"
+    "typescript-eslint": "^8.46.3",
+    "unplugin-swc": "^1.5.8",
+    "vitest": "^4.0.7"
   }
 }
