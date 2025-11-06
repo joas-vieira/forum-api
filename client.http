@@ -1,5 +1,7 @@
 @baseUrl = http://localhost:3333
+@token = {{create_session.response.body.accessToken}}
 
+# @name create_account
 POST {{baseUrl}}/accounts
 Content-Type: application/json
 
@@ -11,10 +13,22 @@ Content-Type: application/json
 
 ###
 
+# @name create_session
 POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
   "email": "john.doe@example.com",
   "password": "password"
+}
+
+###
+
+# @name create_question
+POST {{baseUrl}}/questions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "How to use NestJS with Zod?"
 }
