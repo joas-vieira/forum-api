@@ -1,22 +1,18 @@
-import {
-  Body,
-  Controller,
-  Post,
-  UnauthorizedException,
-  UsePipes,
-} from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { ZodValidationPipe } from 'src/pipes/zod-validation.pipe';
 import { PrismaService } from 'src/prisma/prisma.service';
 import z from 'zod';
 
-const authenticateSchema = z.object({
+const authenticateBodySchema = z.object({
   email: z.email(),
   password: z.string(),
 });
 
-type AuthenticateBody = z.infer<typeof authenticateSchema>;
+const bodyValidationPipe = new ZodValidationPipe(authenticateBodySchema);
+
+type AuthenticateBody = z.infer<typeof authenticateBodySchema>;
 
 @Controller('sessions')
 export class AuthenticateController {
@@ -26,8 +22,9 @@ export class AuthenticateController {
   ) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(authenticateSchema))
-  async handle(@Body() { email, password }: AuthenticateBody) {
+  async handle(
+    @Body(bodyValidationPipe) { email, password }: AuthenticateBody,
+  ) {
     const user = await this.prismaService.user.findUnique({ where: { email } });
 
     if (!user) throw new UnauthorizedException('Invalid credentials');

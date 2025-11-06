@@ -30,5 +30,6 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "title": "How to use NestJS with Zod?"
+  "title": "How to use NestJS with Zod?",
+  "content": "I'm trying to validate my request bodies using Zod in a NestJS application. Any tips?"
 }
