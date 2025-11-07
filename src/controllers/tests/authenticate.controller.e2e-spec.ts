@@ -1,13 +1,10 @@
 import { AppModule } from '@/app.module';
-import { PrismaService } from '@/prisma/prisma.service';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { hash } from 'bcrypt';
 import request from 'supertest';
 
 describe('AuthenticateController', () => {
   let app: INestApplication;
-  let prismaService: PrismaService;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -15,8 +12,6 @@ describe('AuthenticateController', () => {
     }).compile();
 
     app = module.createNestApplication();
-
-    prismaService = app.get<PrismaService>(PrismaService);
 
     await app.init();
   });
@@ -26,12 +21,10 @@ describe('AuthenticateController', () => {
   });
 
   test('[POST] /sessions - 201', async () => {
-    await prismaService.user.create({
-      data: {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        password: await hash('123456', 8),
-      },
+    await request(app.getHttpServer()).post('/accounts').send({
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: '123456',
     });
 
     const response = await request(app.getHttpServer())
