@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { ZodValidationPipe } from '@/pipes/zod-validation.pipe';
@@ -22,6 +28,7 @@ export class AuthenticateController {
   ) {}
 
   @Post()
+  @HttpCode(201)
   async handle(
     @Body(bodyValidationPipe) { email, password }: AuthenticateBody,
   ) {
