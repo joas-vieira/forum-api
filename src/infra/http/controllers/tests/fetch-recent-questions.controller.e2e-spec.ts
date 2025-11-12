@@ -2,7 +2,7 @@ import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
-import { authenticate } from 'test/utils/authenticate';
+import { authenticate } from '@test/utils/authenticate';
 
 describe('FetchRecentQuestionsController', () => {
   let app: INestApplication;

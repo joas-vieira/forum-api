@@ -24,7 +24,8 @@
     "noFallthroughCasesInSwitch": false,
     "types": ["vitest/globals"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@test/*": ["test/*"]
     }
   }
 }

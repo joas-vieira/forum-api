@@ -1,9 +1,9 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question.use-case';
 import { CurrentUser } from '@/infra/auth/current-user.decorator';
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard';
 import type { TokenPayload } from '@/infra/auth/jwt.strategy';
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation.pipe';
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import z from 'zod';
 
 const createQuestionBodySchema = z.object({
@@ -18,7 +18,7 @@ type CreateQuestionBody = z.infer<typeof createQuestionBodySchema>;
 @Controller('questions')
 @UseGuards(JwtAuthGuard)
 export class CreateQuestionController {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly createQuestionUseCase: CreateQuestionUseCase) {}
 
   @Post()
   @HttpCode(201)
@@ -26,19 +26,11 @@ export class CreateQuestionController {
     @CurrentUser() user: TokenPayload,
     @Body(bodyValidationPipe) { title, content }: CreateQuestionBody,
   ) {
-    const slug = this.convertToSlug(title);
-
-    await this.prismaService.question.create({
-      data: { authorId: user.sub, title, content, slug },
+    await this.createQuestionUseCase.execute({
+      authorId: user.sub,
+      title,
+      content,
+      attachmentsIds: [],
     });
-  }
-
-  private convertToSlug(title: string): string {
-    return title
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-');
   }
 }
