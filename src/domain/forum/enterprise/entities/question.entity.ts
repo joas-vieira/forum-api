@@ -8,13 +8,13 @@ import { QuestionBestAnswerChosenEvent } from '../events/question-best-answer-ch
 
 export interface QuestionProps {
   authorId: UniqueId;
-  bestAnswerId?: UniqueId | undefined;
+  bestAnswerId?: UniqueId | undefined | null;
   title: string;
   content: string;
   slug: Slug;
   attachments: QuestionAttachmentList;
   createdAt: Date;
-  updatedAt?: Date;
+  updatedAt?: Date | null;
 }
 
 export class Question extends AggregateRoot<QuestionProps> {
@@ -62,15 +62,8 @@ export class Question extends AggregateRoot<QuestionProps> {
     this.props.updatedAt = new Date();
   }
 
-  set bestAnswerId(bestAnswerId: UniqueId | undefined) {
-    if (bestAnswerId === undefined) {
-      return;
-    }
-
-    if (
-      this.props.bestAnswerId === undefined ||
-      !this.props.bestAnswerId.equals(bestAnswerId)
-    ) {
+  set bestAnswerId(bestAnswerId: UniqueId | undefined | null) {
+    if (bestAnswerId && bestAnswerId !== this.props.bestAnswerId) {
       this.addDomainEvent(
         new QuestionBestAnswerChosenEvent(this, bestAnswerId),
       );

@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -8,27 +7,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+}
+
 model User {
-  id       String @id @default(uuid())
+  id       String   @id @default(uuid())
   name     String
-  email    String @unique
+  email    String   @unique
   password String
+  role     UserRole @default(STUDENT)
 
   questions Question[]
+  answers   Answer[]
 
   @@map("users")
 }
 
 model Question {
-  id        String    @id @default(uuid())
-  authorId  String    @map("author_id")
-  title     String
-  slug      String    @unique
-  content   String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  id           String    @id @default(uuid())
+  authorId     String    @map("author_id")
+  bestAnswerId String?   @unique @map("best_answer_id")
+  title        String
+  slug         String    @unique
+  content      String
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime? @updatedAt @map("updated_at")
 
-  author User @relation(fields: [authorId], references: [id])
+  author     User     @relation(fields: [authorId], references: [id])
+  answers    Answer[]
+  bestAnswer Answer?  @relation("bestAnswer", fields: [bestAnswerId], references: [id])
 
   @@map("questions")
+}
+
+model Answer {
+  id         String    @id @default(uuid())
+  authorId   String    @map("author_id")
+  questionId String    @map("question_id")
+  content    String
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime? @updatedAt @map("updated_at")
+
+  author       User      @relation(fields: [authorId], references: [id])
+  question     Question  @relation(fields: [questionId], references: [id])
+  bestAnswerOn Question? @relation("bestAnswer")
+
+  @@map("answers")
 }
