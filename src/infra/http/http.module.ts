@@ -6,6 +6,7 @@ import { CreateQuestionController } from './controllers/create-question.controll
 import { FetchRecentQuestionsController } from './controllers/fetch-recent-questions.controller';
 import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question.use-case';
 import { QuestionRepository } from '@/domain/forum/application/repositories/question.repository';
+import { FetchRecentQuestionsUseCase } from '@/domain/forum/application/use-cases/fetch-recent-questions.use-case';
 
 @Module({
   imports: [DatabaseModule],
@@ -20,6 +21,13 @@ import { QuestionRepository } from '@/domain/forum/application/repositories/ques
       provide: CreateQuestionUseCase,
       useFactory: (questionRepository: QuestionRepository) => {
         return new CreateQuestionUseCase(questionRepository);
+      },
+      inject: [QuestionRepository],
+    },
+    {
+      provide: FetchRecentQuestionsUseCase,
+      useFactory: (questionRepository: QuestionRepository) => {
+        return new FetchRecentQuestionsUseCase(questionRepository);
       },
       inject: [QuestionRepository],
     },
