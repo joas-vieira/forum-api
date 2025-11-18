@@ -3,7 +3,6 @@ import { Encrypter } from '../cryptography/encrypter.js';
 import { HashComparer } from '../cryptography/hash-comparer.js';
 import { StudentRepository } from '../repositories/student.repository.js';
 import { InvalidCredentialsError } from './errors/invalid-credentials.error.js';
-import { StudentAlreadyExistsError } from './errors/student-already-exists.error.js';
 
 interface AuthenticateStudentUseCaseRequest {
   email: string;
@@ -11,7 +10,7 @@ interface AuthenticateStudentUseCaseRequest {
 }
 
 type AuthenticateStudentUseCaseResponse = Either<
-  StudentAlreadyExistsError,
+  InvalidCredentialsError,
   {
     accessToken: string;
   }

@@ -1,6 +1,14 @@
+import { StudentAlreadyExistsError } from '@/domain/forum/application/use-cases/errors/student-already-exists.error';
 import { RegisterStudentUseCase } from '@/domain/forum/application/use-cases/register-student.use-case';
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation.pipe';
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Post,
+} from '@nestjs/common';
 import z from 'zod';
 
 const createAccountBodySchema = z.object({
@@ -31,7 +39,12 @@ export class CreateAccountController {
     });
 
     if (response.isLeft()) {
-      throw new Error();
+      switch (response.value.constructor) {
+        case StudentAlreadyExistsError:
+          throw new ConflictException(response.value.message);
+        default:
+          throw new BadRequestException(response.value.message);
+      }
     }
   }
 }
