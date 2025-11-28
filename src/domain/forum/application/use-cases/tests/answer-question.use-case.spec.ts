@@ -20,7 +20,7 @@ describe('AnswerQuestionUseCase', () => {
 
   it('should be able create an answer', async () => {
     const response = await sut.execute({
-      instructorId: '1',
+      authorId: '1',
       questionId: '1',
       content: 'This is an answer',
       attachmentsIds: ['1', '2'],

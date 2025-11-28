@@ -22,6 +22,9 @@ import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-q
 import { QuestionAttachmentRepository } from '@/domain/forum/application/repositories/question-attachment.repository';
 import { DeleteQuestionController } from './controllers/delete-question.controller';
 import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/delete-question.use-case';
+import { AnswerQuestionController } from './controllers/answer-question.controller';
+import { AnswerQuestionUseCase } from '@/domain/forum/application/use-cases/answer-question.use-case';
+import { AnswerRepository } from '@/domain/forum/application/repositories/answer.repository';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -33,6 +36,7 @@ import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/dele
     GetQuestionBySlugController,
     EditQuestionController,
     DeleteQuestionController,
+    AnswerQuestionController,
   ],
   providers: [
     makeUseCaseProvider(RegisterStudentUseCase, [
@@ -52,6 +56,7 @@ import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/dele
       QuestionAttachmentRepository,
     ]),
     makeUseCaseProvider(DeleteQuestionUseCase, [QuestionRepository]),
+    makeUseCaseProvider(AnswerQuestionUseCase, [AnswerRepository]),
   ],
 })
 export class HttpModule {}

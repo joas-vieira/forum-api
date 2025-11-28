@@ -6,7 +6,7 @@ import { Answer } from '../../enterprise/entities/answer.entity.js';
 import type { AnswerRepository } from '../repositories/answer.repository.js';
 
 interface AnswerQuestionUseCaseRequest {
-  instructorId: string;
+  authorId: string;
   questionId: string;
   content: string;
   attachmentsIds: string[];
@@ -23,13 +23,13 @@ export class AnswerQuestionUseCase {
   constructor(private readonly answerRepository: AnswerRepository) {}
 
   async execute({
-    instructorId,
+    authorId,
     questionId,
     content,
     attachmentsIds,
   }: AnswerQuestionUseCaseRequest): Promise<AnswerQuestionUseCaseResponse> {
     const answer = Answer.create({
-      authorId: new UniqueId(instructorId),
+      authorId: new UniqueId(authorId),
       questionId: new UniqueId(questionId),
       content,
     });
