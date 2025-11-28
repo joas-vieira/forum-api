@@ -87,3 +87,9 @@ Authorization: Bearer {{token}}
   "content": "You can use Zod for schema validation in NestJS by creating custom pipes."
 }
 
+###
+
+# @name delete_answer
+DELETE {{baseUrl}}/answers/:id
+Content-Type: application/json
+Authorization: Bearer {{token}}
