@@ -48,6 +48,13 @@ Authorization: Bearer {{token}}
 
 ###
 
+# @name delete_question
+DELETE {{baseUrl}}/questions/:id
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
 # @name fetch_recent_questions
 GET {{baseUrl}}/questions?page=1
 Authorization: Bearer {{token}}
