@@ -3,7 +3,8 @@ import { UniqueId } from '@/core/entities/value-objects/unique-id.value-object.j
 import { QuestionAttachmentList } from '../../enterprise/entities/question-attachment-list.entity.js';
 import { QuestionAttachment } from '../../enterprise/entities/question-attachment.entity.js';
 import { Question } from '../../enterprise/entities/question.entity.js';
-import type { QuestionRepository } from '../repositories/question.repository.js';
+import { QuestionRepository } from '../repositories/question.repository.js';
+import { Injectable } from '@nestjs/common';
 
 interface CreateQuestionUseCaseRequest {
   authorId: string;
@@ -19,6 +20,7 @@ type CreateQuestionUseCaseResponse = Either<
   }
 >;
 
+@Injectable()
 export class CreateQuestionUseCase {
   constructor(private readonly questionRepository: QuestionRepository) {}
 
