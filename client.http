@@ -64,3 +64,26 @@ Authorization: Bearer {{token}}
 # @name get_question_by_slug
 GET {{baseUrl}}/questions/how-to-use-nestjs-with-yup
 Authorization: Bearer {{token}}
+
+###
+
+# @name answer_question
+POST {{baseUrl}}/questions/:questionId/answers
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "content": "You can use Zod for schema validation in NestJS by creating custom pipes."
+}
+
+###
+
+# @name edit_answer
+PUT {{baseUrl}}/answers/:id
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "content": "You can use Zod for schema validation in NestJS by creating custom pipes."
+}
+
