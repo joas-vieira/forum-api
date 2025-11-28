@@ -39,3 +39,9 @@ Authorization: Bearer {{token}}
 # @name fetch_recent_questions
 GET {{baseUrl}}/questions?page=1
 Authorization: Bearer {{token}}
+
+###
+
+# @name get_question_by_slug
+GET {{baseUrl}}/questions/how-to-use-nestjs-with-yup
+Authorization: Bearer {{token}}
