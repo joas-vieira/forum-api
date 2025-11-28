@@ -62,7 +62,7 @@ Authorization: Bearer {{token}}
 ###
 
 # @name get_question_by_slug
-GET {{baseUrl}}/questions/how-to-use-nestjs-with-yup
+GET {{baseUrl}}/questions/:slug
 Authorization: Bearer {{token}}
 
 ###
@@ -92,4 +92,10 @@ Authorization: Bearer {{token}}
 # @name delete_answer
 DELETE {{baseUrl}}/answers/:id
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# @name fetch_question_answers
+GET {{baseUrl}}/questions/:questionId/answers?page=1
 Authorization: Bearer {{token}}
