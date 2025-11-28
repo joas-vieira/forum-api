@@ -36,6 +36,18 @@ Authorization: Bearer {{token}}
 
 ###
 
+# @name edit_question
+PUT {{baseUrl}}/questions/:id
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "How to use NestJS with Joi?",
+  "content": "I'm trying to validate my request bodies using Joi in a NestJS application. Any tips?"
+}
+
+###
+
 # @name fetch_recent_questions
 GET {{baseUrl}}/questions?page=1
 Authorization: Bearer {{token}}

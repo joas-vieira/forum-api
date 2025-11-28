@@ -17,6 +17,9 @@ import { Encrypter } from '@/domain/forum/application/cryptography/encrypter';
 import { makeUseCaseProvider } from './factories/make-use-case-provider.factory';
 import { GetQuestionBySlugUseCase } from '@/domain/forum/application/use-cases/get-question-by-slug.use-case';
 import { GetQuestionBySlugController } from './controllers/get-question-by-slug.controller';
+import { EditQuestionController } from './controllers/edit-question.controller';
+import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-question.use-case';
+import { QuestionAttachmentRepository } from '@/domain/forum/application/repositories/question-attachment.repository';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -26,6 +29,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     CreateQuestionController,
     FetchRecentQuestionsController,
     GetQuestionBySlugController,
+    EditQuestionController,
   ],
   providers: [
     makeUseCaseProvider(RegisterStudentUseCase, [
@@ -40,6 +44,10 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     makeUseCaseProvider(CreateQuestionUseCase, [QuestionRepository]),
     makeUseCaseProvider(FetchRecentQuestionsUseCase, [QuestionRepository]),
     makeUseCaseProvider(GetQuestionBySlugUseCase, [QuestionRepository]),
+    makeUseCaseProvider(EditQuestionUseCase, [
+      QuestionRepository,
+      QuestionAttachmentRepository,
+    ]),
   ],
 })
 export class HttpModule {}
