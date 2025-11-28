@@ -1,18 +1,24 @@
 import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { FactoryModule } from '@test/factories/factory.module';
+import { AuthFactory } from '@test/factories/make-auth.factory';
+import { QuestionFactory } from '@test/factories/make-question.factory';
 import request from 'supertest';
-import { authenticate } from '@test/utils/authenticate';
 
 describe('FetchRecentQuestionsController', () => {
   let app: INestApplication;
+  let questionFactory: QuestionFactory;
+  let authFactory: AuthFactory;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, FactoryModule],
     }).compile();
 
     app = module.createNestApplication();
+    questionFactory = module.get<QuestionFactory>(QuestionFactory);
+    authFactory = module.get<AuthFactory>(AuthFactory);
 
     await app.init();
   });
@@ -22,23 +28,16 @@ describe('FetchRecentQuestionsController', () => {
   });
 
   test('[GET] /questions - 200', async () => {
-    const { accessToken } = await authenticate({ app });
+    const { accessToken, user } = await authFactory.makeToken();
 
-    await request(app.getHttpServer())
-      .post('/questions')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        title: 'Question 1',
-        content: 'Content for question 1',
-      });
-
-    await request(app.getHttpServer())
-      .post('/questions')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        title: 'Question 2',
-        content: 'Content for question 2',
-      });
+    await questionFactory.makePrisma({
+      authorId: user.id,
+      title: 'Question 1',
+    });
+    await questionFactory.makePrisma({
+      authorId: user.id,
+      title: 'Question 2',
+    });
 
     const response = await request(app.getHttpServer())
       .get('/questions')
